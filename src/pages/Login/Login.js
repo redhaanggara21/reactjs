@@ -1,13 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Login.css';
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { login_ } from "../../actions/auth";
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
-// import { ErrorMessage } from '@hookform/error-message';
+import Loading from '../../components/Loading';
 
-const Login = () => {
+const Login = (props) => {
 
     
     const { register, handleSubmit, formState: { errors } } = useForm({
@@ -19,25 +19,37 @@ const Login = () => {
 
     const dispatch = useDispatch();
     const { isLoggedIn } = useSelector(state => state.auth);
+    const [isLoading, setLoading] = useState(false);
 
     const onSubmit =  (e) => {
+        setLoading(!isLoading);
         dispatch(login_(e.email, e.password)).then((response) => {
-            console.log(response);
             if(!response){
-
+                setLoading(!isLoading);
+                props.history.push("/barang");
+                window.location.reload();
             }else{
+                setLoading(!isLoading);
+                // error login
                 // props.history.push("/barang");
                 // window.location.reload();
             } 
         });
     }
 
+    useEffect(() => {
+        // setLoading(false);
+        return () => {
+            
+        };
+    },[isLoading]);
     // if (isLoggedIn) {
     //     return <Redirect to="/dashboard" />;
     // }
 
     return(
         <div className="container login-form">
+            <Loading isLoading={isLoading}/>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>

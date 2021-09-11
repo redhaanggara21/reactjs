@@ -23,6 +23,7 @@ export const register_ = (username, email, password) => (dispatch) => {
       });
 
       return Promise.resolve();
+
     },
     (error) => {
       const message =
@@ -47,8 +48,9 @@ export const register_ = (username, email, password) => (dispatch) => {
 };
 
 export const login_ = (email, password) => (dispatch) => {
-  return authService.login(email, password).then(
-    (data) => {
+  return authService.login(email, password).then((data) => {
+
+    console.log(data);
       dispatch({
         type: LOGIN_SUCCESS,
         payload: { user: data },

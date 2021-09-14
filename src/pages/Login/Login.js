@@ -1,55 +1,83 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Login.css';
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { login_ } from "../../actions/auth";
 import { Form, Button, Row, Col } from 'react-bootstrap';
+import { useForm } from "react-hook-form";
+import Loading from '../../components/Loading';
 
 const Login = (props) => {
 
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+          email: "",
+          password: ""
+        }
+      });
+
     const dispatch = useDispatch();
     const { isLoggedIn } = useSelector(state => state.auth);
+    const [isLoading, setLoading] = useState(false);
 
-    const handleSubmit =  (e) => {
-        e.preventDefault();
-        // setLoading(true);
-        dispatch(login_(email, password)).then((response) => {
-            console.log(response);
-            props.history.push("/barang");
-            window.location.reload();
-        }).catch((error) => {
-            console.log(error);
-            // setLoading(false);
+    const onSubmit =  (e) => {
+        setLoading(!isLoading);
+        dispatch(login_(e.email, e.password)).then((response) => {
+            if(!response){
+                setLoading(!isLoading);
+                props.history.push("/barang");
+                window.location.reload();
+            }else{
+                setLoading(!isLoading);
+                // error login
+                // props.history.push("/barang");
+                // window.location.reload();
+            } 
         });
-        // setToken("");
     }
 
+    useEffect(() => {
+        // setLoading(false);
+        return () => {
+            
+        };
+    },[isLoading]);
     // if (isLoggedIn) {
     //     return <Redirect to="/dashboard" />;
     // }
 
     return(
         <div className="container login-form">
-              <Form onSubmit={handleSubmit}>
+            <Loading isLoading={isLoading}/>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control 
-                        type="text" 
-                        placeholder="Email"
-                        onChange={e => setEmail(e.target.value)}/>
-                </Form.Group>
+                        name="email"
+                        type="text"
+                        placeholder="your email"
+                        {...register("email", { required: true, maxLength: 30 })}/>
+                    
+                    {errors.email && errors.email.type === "required" && <span>email is required</span>}
+                    {errors.email && errors.email.type === "maxLength" && <span>email length exceeded</span> }
 
+                </Form.Group>
+                
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
-                        type="password" 
-                        placeholder="Password"
-                        onChange={e => setPassword(e.target.value)}/>
+                        name="password"
+                        type="password"
+                        placeholder="your password"
+                        {...register("password", { required: true, maxLength: 30 })}/>
+                    
+                    {errors.password && errors.password.type === "required" && <span>password is required</span>}
+                    {errors.password && errors.password.type === "maxLength" && <span>password max length exceeded</span> }
+
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    Submit
+                    Login
                 </Button>
             </Form>
         </div>

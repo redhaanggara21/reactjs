@@ -11,13 +11,11 @@ const register = (username, email, password) => {
 
 const login = (email, password) => {
   const body = { email: email, password: password};
-  // const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
-  return axios
-    .post(config.API_URL() + "login", body)
-    .then(response => {
-      if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data.content));
-      }
+
+  return axios.post(config.API_URL() + "login", body).then(response => {
+    if (response.status === 200) {
+      localStorage.setItem("user", JSON.stringify(response.data.content));
+    }
       return response;
     });
 };
@@ -29,7 +27,7 @@ const logout = () => {
         localStorage.removeItem("user");
       }
       return response;
-    })
+    });
 };
 
 export default {

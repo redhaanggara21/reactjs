@@ -10,7 +10,8 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
     const [namaBarang, setNamaBarang] = useState("");
     const [harga, setHarga] = useState("");
     const [kategori, setKategori] = useState();
-    
+    const [keterangan, setKeterangan] = useState("");
+
     const listKategori = [
         {value: 'ATK', label: 'ATK'},
         {value: 'RT', label: 'RT'},
@@ -28,6 +29,11 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
         dataForm.HARGA = harga > 0 ? harga : dataForm.HARGA;
         dataForm.KATEGORI = kategori ? kategori : dataForm.KATEGORI;
         dataForm.KATEGORI = dataForm.KATEGORI == "" ? "RT" : dataForm.KATEGORI;
+
+
+        dataForm.KETERANGAN= keterangan ? keterangan : dataForm.KETERANGAN;
+        dataForm.KETERANGAN = dataForm.KETERANGAN == "" ? "" : dataForm.KETERANGAN;
+        
         saveBarang(dataForm);
     }
 
@@ -37,6 +43,10 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
 
     const handleChangePrice = (e) =>{
         setHarga(e);
+    }
+
+    const handleChangeKeterangan = (e) =>{
+        setKeterangan(e);
     }
 
     useEffect(() => {
@@ -93,6 +103,16 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
                         <option value="Elektro">Elektro</option>
                     </Form.Control> */}
                 </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>KETERANGAN</Form.Label>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Enter keterangan"
+                        onChange={e => handleChangeKeterangan(e.target.value)} 
+                        defaultValue={dataForm.KETERANGAN}/>
+                </Form.Group>
+
                 <Row>
                     <Col xs={6}>
                         <Button 

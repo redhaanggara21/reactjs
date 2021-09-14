@@ -19,6 +19,7 @@ const Barang = (props) => {
     HARGA: null,
     KATEGORI: "",
     NAMA_BARANG: "",
+    KETERANGAN: "",
     created_at: "",
     id: 0
   });
@@ -79,6 +80,7 @@ const Barang = (props) => {
                   HARGA: 0,
                   KATEGORI: "",
                   NAMA_BARANG: "",
+                  KETERANGAN: "",
                   created_at: "",
                   id: 0
                 }); 
@@ -98,6 +100,7 @@ const Barang = (props) => {
                   HARGA: 0,
                   KATEGORI: "",
                   NAMA_BARANG: "",
+                  KETERANGAN: "",
                   created_at: "",
                   id: 0
                 });
@@ -116,6 +119,7 @@ const Barang = (props) => {
         HARGA: 0,
         KATEGORI: "",
         NAMA_BARANG: "",
+        KETERANGAN: "",
         created_at: "",
         id: 0
       });

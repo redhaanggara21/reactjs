@@ -22,6 +22,7 @@ const BarangList = ({editEvent, removeEvent, dataBarang}) => {
                         <th>Nama Barang</th>
                         <th>Kategori</th>
                         <th>Harga</th>
+                        <th>KETERANGAN</th>
                         <th>
                             Action
                         </th>
@@ -34,6 +35,7 @@ const BarangList = ({editEvent, removeEvent, dataBarang}) => {
                         <td>{row.NAMA_BARANG}</td>
                         <td>{row.KATEGORI}</td>
                         <td>{row.HARGA}</td>
+                        <td>{row.KETERANGAN}</td>
                         <td>
                             <Button variant="outline-dark" onClick={() => handleRemoveBook(row.id, index)}>Remove</Button>
                             &nbsp;

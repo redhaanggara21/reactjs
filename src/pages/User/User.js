@@ -7,6 +7,7 @@ import PelangganList from '../../components/PelangganList';
 import FormPelanggan from '../../components/FormPelanggan';
 
 import user from '../../services/user';
+import AppContext from '../../contexts/appContext';
 
 const User = (props) => {
     const dispatch = useDispatch();
@@ -82,7 +83,11 @@ const User = (props) => {
     
     return(
         <div>
-            <Header logoutEvent={handleLogout}/>
+
+            <AppContext.Provider value={{"activeHeader": "pelanggan"}}>
+                <Header logoutEvent={handleLogout}/>
+            </AppContext.Provider>
+
                 <div className="container">
                     <Row>
                         <Col xs={8}>

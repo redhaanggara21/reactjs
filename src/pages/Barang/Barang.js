@@ -8,6 +8,7 @@ import barangService from "../../services/barang";
 import BarangList from '../../components/BarangList';
 import FormBarang from '../../components/FormBarang';
 
+import AppContext from '../../contexts/appContext';
   
 const Barang = (props) => {
 
@@ -131,7 +132,11 @@ const Barang = (props) => {
 
   return(
     <div>
-      <Header logoutEvent={handleLogout}/>
+
+    <AppContext.Provider value={{"activeHeader": "barang"}}>
+        <Header logoutEvent={handleLogout}/>
+    </AppContext.Provider>
+
       <div className="container">
           <h2>Barang</h2>
             <Row>

@@ -12,6 +12,8 @@ import barang from '../../services/barang';
 import user from '../../services/user';
 import BarangAlreadyBuy from '../../components/BarangAlreadyBuy';
 
+import AppContext from '../../contexts/appContext';
+
 const Preferences = (props) => {
 
   const abstractForm = (qty=0, kode_barang=0, harga=0) => {
@@ -261,7 +263,11 @@ const Preferences = (props) => {
 
   return(
     <div>
-      <Header logoutEvent={handleLogout}/>
+
+      <AppContext.Provider value={{"activeHeader": "penjualan"}}>
+        <Header logoutEvent={handleLogout}/>
+      </AppContext.Provider>
+
       <div className="container">
           <h2>Penjualan {openForm}</h2>
           <Button

@@ -9,6 +9,8 @@ import Login from './pages/Login/Login';
 import Preferences from './pages/Preferences/Preferences';
 import Barang from './pages/Barang/Barang';
 import User from './pages/User/User';
+import TodoContext from "./pages/TodoContext/TodoContext";
+
 import useToken from './useToken';
 import { history } from "./helpers/history";
 import PrivateRoute from './routes/PrivateRoute';
@@ -55,6 +57,7 @@ const App = () => {
           <PrivateRoute component={Barang} path="/barang" exact />
           <PrivateRoute component={User} path="/user" exact />
           <PrivateRoute component={Preferences} path="/preferences" exact />
+          <PrivateRoute component={TodoContext} path="/todo" exact />
 
         {/* <Route exact path={["/", "/login"]} component={Login} />
         <Route exact path="/dashboard" component={Dashboard} />

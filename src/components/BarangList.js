@@ -4,23 +4,24 @@ import { Table, Button } from 'react-bootstrap';
 import { retrieveBarangs, deleteBarang, findById } from "../actions/barang";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
+import { Pagination } from 'react-laravel-paginex';
 
 const BarangList = () => {
     
-    const { data, dataselect} = useSelector(
+    const dispatch = useDispatch();
+    const [page, setPage] = useState(1);
+
+    const { data, dataselect, datapagination } = useSelector(
         state =>
         state.barangReducer
     );
-    
-    console.log(data);
-    console.log(dataselect);
-  
-    const dispatch = useDispatch();
-    
+      
+    // console.log(datapagination);
+
     const handleRemoveBook = (id,index) => {
         dispatch(deleteBarang(id)).then(() => {
             if(data.length < 5){
-                dispatch(retrieveBarangs());
+                getData();
             }
         }).catch(error => {
             console.log(error);
@@ -31,8 +32,13 @@ const BarangList = () => {
         dispatch(findById(id));
     };
     
+    const getData = (param) => {
+        const p = !param?.page ? 1 : param?.page;
+        dispatch(retrieveBarangs(p));
+    }
+
     useEffect(() => {
-        dispatch(retrieveBarangs());
+        getData();
       }, []);
 
     return (
@@ -67,6 +73,7 @@ const BarangList = () => {
                 ))}
                 </tbody>
             </Table>
+            <Pagination changePage={getData} data={datapagination}/>
       </div>
     );
 };

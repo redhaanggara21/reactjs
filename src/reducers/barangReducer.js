@@ -12,26 +12,28 @@ const initialData = {};
 
 function barangReducer(barangs = initialState, action) {
 
-  const { type, payload, dataselect } = action;
+  const { type, payload, dataPagination ,dataselect } = action;
 
   switch (type) {
     case CREATE_BARANG:
       return {
-        data: [...barangs, payload],
-        dataselect: null
+        data: [...barangs.data, payload],
+        dataselect: null,
+        datapagination: barangs.datapagination
       };
 
     case GET_BARANG:
       return {
         data: payload,
         dataselect: null,
+        datapagination: dataPagination
       }
 
     case READ_BARANG:
-      console.log(dataselect);
       return {
         data: barangs.data,
         dataselect: dataselect,
+        datapagination: barangs.datapagination
       }
 
     case UPDATE_BARANG:
@@ -48,13 +50,15 @@ function barangReducer(barangs = initialState, action) {
 
       return {
         data: data,
-        dataselect: null
+        dataselect: null,
+        datapagination: barangs.datapagination
       }
 
     case DELETE_BARANG:
       return {
         data: barangs.data.filter(({ id }) => id !== payload.id),
-        dataselect: null
+        dataselect: null,
+        datapagination: barangs.datapagination
       };
 
     case DELETE_ALL_BARANG:

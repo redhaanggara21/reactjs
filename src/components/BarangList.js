@@ -1,18 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Table, Button } from 'react-bootstrap';
+import { retrieveBarangs, deleteBarang, findById } from "../actions/barang";
+import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 
-const BarangList = ({editEvent, removeEvent, dataBarang}) => {
-
+const BarangList = () => {
+    
+    const { data, dataselect} = useSelector(
+        state =>
+        state.barangReducer
+    );
+    
+    console.log(data);
+    console.log(dataselect);
+  
+    const dispatch = useDispatch();
+    
     const handleRemoveBook = (id,index) => {
-        dataBarang.splice(index, 1);
-        removeEvent(id);
+        dispatch(deleteBarang(id)).then(() => {
+            if(data.length < 5){
+                dispatch(retrieveBarangs());
+            }
+        }).catch(error => {
+            console.log(error);
+        })
     };
 
     const handleEditBook = (id) => {
-        editEvent(dataBarang.filter((barang) => barang.id === id));
+        dispatch(findById(id));
     };
-  
+    
+    useEffect(() => {
+        dispatch(retrieveBarangs());
+      }, []);
+
     return (
       <div>
           <Table>
@@ -29,7 +51,7 @@ const BarangList = ({editEvent, removeEvent, dataBarang}) => {
                     </tr>
                 </thead>
                 <tbody>
-                { dataBarang.map((row,index) => (
+                { data && data.map((row,index) => (
                     <tr>
                         <td>{row.id}</td>
                         <td>{row.NAMA_BARANG}</td>
@@ -49,4 +71,17 @@ const BarangList = ({editEvent, removeEvent, dataBarang}) => {
     );
 };
 
-export default BarangList;
+// export default BarangList;
+
+const mapStateToProps = (state) => {
+    return {
+        data: state.data,
+        dataselect: state.dataselect
+    };
+  };
+  
+  export default connect(mapStateToProps, {
+    retrieveBarangs,
+    deleteBarang,
+    findById
+  })(BarangList);

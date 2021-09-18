@@ -1,16 +1,48 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import Select from "react-select";
+import { connect } from "react-redux";
+import { createBarang, updateBarang } from "../actions/barang";
+import { useDispatch, useSelector } from "react-redux";
+import { data } from 'jquery';
+// import { set } from '@reduxjs/toolkit/node_modules/immer/dist/internal';
 
-// type StatusInterface  = {
-//     status: 'add' | 'edit'
-// }
+const FormBarang = React.memo(() => {
 
-const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
-    const [namaBarang, setNamaBarang] = useState("");
-    const [harga, setHarga] = useState("");
-    const [kategori, setKategori] = useState();
-    const [keterangan, setKeterangan] = useState("");
+    
+    const { dataselect } = useSelector((state) =>{
+        return state.barangReducer;
+    });
+
+    console.log(dataselect?.id);
+
+    const [status, setStatus] = useState(!dataselect?.id ? 'add' : 'edit');
+   
+    // const [namaBarang, setNamaBarang] = useState();
+    // const [harga, setHarga] = useState();
+    // const [kategori, setKategori] = useState();
+    // const [keterangan, setKeterangan] = useState();
+
+    const [id, setId] = useState(dataselect?.id);
+    const [namaBarang, setNamaBarang] = useState(dataselect?.NAMA_BARANG);
+    const [harga, setHarga] = useState(dataselect?.HARGA);
+    const [kategori, setKategori] = useState(dataselect?.KATEGORI);
+    const [keterangan, setKeterangan] = useState(dataselect?.KETERANGAN);
+    
+    useEffect(() => {
+        setStatus(!dataselect?.id ? 'add' : 'edit');
+        setId(dataselect?.id);
+        setNamaBarang(dataselect?.NAMA_BARANG);
+        setHarga(dataselect?.HARGA);
+        setKategori(dataselect?.KATEGORI);
+        setKeterangan(dataselect?.KETERANGAN);
+        return () => {
+            // dataselect = {};
+        }
+
+    },[dataselect]);
+
+    const dispatch = useDispatch();
 
     const listKategori = [
         {value: 'ATK', label: 'ATK'},
@@ -20,21 +52,31 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
     ];
 
     const handleRemoveDataForm = (e) => {
-        removeDataForm(dataForm.id);
+        setId(null);
+        setNamaBarang("");
+        setHarga(0);
+        setKategori("");
+        setKeterangan("");
+        setStatus("add");
     };
+
 
     const handleSaveDataForm = (e) => {
         e.preventDefault();
-        dataForm.NAMA_BARANG = namaBarang.length > 0 ? namaBarang : dataForm.NAMA_BARANG;
-        dataForm.HARGA = harga > 0 ? harga : dataForm.HARGA;
-        dataForm.KATEGORI = kategori ? kategori : dataForm.KATEGORI;
-        dataForm.KATEGORI = dataForm.KATEGORI == "" ? "RT" : dataForm.KATEGORI;
-
-
-        dataForm.KETERANGAN= keterangan ? keterangan : dataForm.KETERANGAN;
-        dataForm.KETERANGAN = dataForm.KETERANGAN == "" ? "" : dataForm.KETERANGAN;
-        
-        saveBarang(dataForm);
+        if(status == "add"){
+            dispatch(createBarang(namaBarang, harga, kategori, keterangan));
+            handleRemoveDataForm();
+        }else{
+            const bodys = {
+                'id': id,
+                'NAMA_BARANG': namaBarang,
+                'HARGA': harga,
+                'KATEGORI': kategori,
+                'KETERANGAN': keterangan
+            };
+            dispatch(updateBarang(bodys, id));
+            handleRemoveDataForm();
+        }
     }
 
     const handleChangeNamaBarang = (e) =>{
@@ -49,13 +91,6 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
         setKeterangan(e);
     }
 
-    useEffect(() => {
-        setHarga(dataForm.HARGA)
-        return () => {
-            
-        }
-
-    },[]);
 
     return(
         <div>
@@ -67,7 +102,7 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
                         type="text" 
                         placeholder="Enter nama"
                         onChange={e => handleChangeNamaBarang(e.target.value)}
-                        defaultValue={dataForm.NAMA_BARANG} />
+                        value={ namaBarang } />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Harga</Form.Label>
@@ -75,14 +110,14 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
                         type="number" 
                         placeholder="Enter price"
                         onChange={e => handleChangePrice(e.target.value)} 
-                        defaultValue={dataForm.HARGA}/>
+                        value={harga}/>
                 </Form.Group>
                 <Form.Group controlId="formBasicSelect">
                     <Form.Label>Kategori</Form.Label>
                     <Select
                           value = {
                             listKategori.filter(option => 
-                               option.label === (!kategori ? dataForm.KATEGORI : kategori))
+                               option.label === (!kategori ? "" : kategori))
                           }                     
                           placeholder="Select Gender"
                           className="full-width"
@@ -90,18 +125,6 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
                           onChange={e => 
                             setKategori(e.value)
                           }></Select>
-
-                    {/* <Form.Control
-                         as="select"
-                         value={ dataForm.KATEGORI == "" ? kategori  : dataForm.KATEGORI }
-                         onChange={e => {
-                            console.log(e);
-                            setKategori(e.target.value);
-                         }} >
-                        <option value="RT">RT</option>
-                        <option value="Masak">Masak</option>
-                        <option value="Elektro">Elektro</option>
-                    </Form.Control> */}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -110,7 +133,7 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
                         type="text" 
                         placeholder="Enter keterangan"
                         onChange={e => handleChangeKeterangan(e.target.value)} 
-                        defaultValue={dataForm.KETERANGAN}/>
+                        value={keterangan}/>
                 </Form.Group>
 
                 <Row>
@@ -132,6 +155,17 @@ const FormBarang = ({status, dataForm, removeDataForm, saveBarang}) => {
             </Form>
         </div>
     )
-};
+});
 
-export default FormBarang;
+// export default FormBarang;
+// export default connect(null, { createBarang })(FormBarang);
+
+const mapStateToProps = (state) => {
+    return {
+        dataselect: state.dataselect
+    };
+  };
+  
+export default connect(mapStateToProps, {
+    createBarang
+  })(FormBarang);

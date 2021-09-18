@@ -9,7 +9,7 @@ import BarangList from '../../components/BarangList';
 import FormBarang from '../../components/FormBarang';
 
 import AppContext from '../../contexts/appContext';
-  
+
 const Barang = (props) => {
 
   const dispatch = useDispatch();
@@ -26,12 +26,12 @@ const Barang = (props) => {
   });
 
   useEffect(() => {
-    barangService.index().then(response => {
-        setDataBarang(response.data.data);
-      }, (error) => {
-        console.log(error);
-      }
-    );
+    // barangService.index().then(response => {
+    //     setDataBarang(response.data.data);
+    //   }, (error) => {
+    //     console.log(error);
+    //   }
+    // );
 
     return () => {
       // cancel your api calls here so that there won't be any data leaks
@@ -141,17 +141,10 @@ const Barang = (props) => {
           <h2>Barang</h2>
             <Row>
                 <Col xs={8}>
-                    <BarangList 
-                        editEvent={editBarang} 
-                        removeEvent={removeBarang} 
-                        dataBarang={databarang}/>
+                    <BarangList/>
                 </Col>
                 <Col xs={4}>
-                    <FormBarang 
-                        status={titleForm} 
-                        dataForm={dataForm}
-                        saveBarang={saveBarang}
-                        removeDataForm={removeDataForm}/>
+                    <FormBarang status={titleForm}/>
                 </Col>
             </Row>
       </div>

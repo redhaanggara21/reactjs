@@ -6,9 +6,7 @@ const index = () => {
 };
 
 const create = (data) => {
-    return axios.post(config.API_URL() + "mydata/barang", data, config.headerHttp()).then(response => {
-        return response;
-    });
+    return axios.post(config.API_URL() + "mydata/barang", data, config.headerHttp());
 };
 
 const read = (id) => {

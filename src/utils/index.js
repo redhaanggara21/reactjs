@@ -1,6 +1,6 @@
-export const login = () => {
-    localStorage.setItem("user", "user");
-}
+// export const login = () => {
+//     localStorage.setItem("user", "user");
+// }
 
 export const logout = () => {
     localStorage.removeItem("user");

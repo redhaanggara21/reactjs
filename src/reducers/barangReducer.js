@@ -1,114 +1,68 @@
-// Dont Forget import the types
 import {
+  GET_BARANG,
+  CREATE_BARANG,
+  DELETE_BARANG,
+  UPDATE_BARANG,
+  DELETE_ALL_BARANG,
+  READ_BARANG
+} from "../actions/types";
 
-    GET_BARANG,
-    CREATE_BARANG,
+const initialState = [];
+const initialData = {};
 
-    DELETE_BARANG,
-    UPDATE_BARANG,
+function barangReducer(barangs = initialState, action) {
 
-    SET_NAMA_BARANG,
-    CLEAR_NAMA_BARANG,
+  const { type, payload, dataselect } = action;
 
-    SET_HARGA_BARANG,
-    CLEAR_HARGA_BARANG,
+  switch (type) {
+    case CREATE_BARANG:
+      return {
+        data: [...barangs, payload],
+        dataselect: null
+      };
 
-    SET_KATEGORI_BARANG,
-    CLEAR_KATEGORI_BARANG,
+    case GET_BARANG:
+      return {
+        data: payload,
+        dataselect: null,
+      }
 
-    SET_KETERANGAN_BARANG,
-    CLEAR_KETERANGAN_BARANG
+    case READ_BARANG:
+      console.log(dataselect);
+      return {
+        data: barangs.data,
+        dataselect: dataselect,
+      }
 
-  } from "../actions/type";
-  
-  export default (state, { type, payload }) => {
-    switch (type) {
-
-      // Get all todos
-      case GET_BARANG:
-        return {
-          ...state,
-          loading: false,
-          barangList: payload
+    case UPDATE_BARANG:
+      const data = barangs.data.map((row) => {
+        if (row.id === payload.id) {
+          row.NAMA_BARANG = payload.NAMA_BARANG;
+          row.HARGA = payload.HARGA;
+          row.KATEGORI = payload.KATEGORI;
+          row.KATERANGAN = payload.KATERANGAN;
+          return row;
         }
+        return row;
+      });
 
-      // Set value for form
-      case SET_NAMA_BARANG:
-        return {
-          ...state,
-          NAMA_BARANG: payload
-        }
+      return {
+        data: data,
+        dataselect: null
+      }
 
-      // Set value for form
-      case CLEAR_NAMA_BARANG:
-        return {
-          ...state,
-          NAMA_BARANG: ""
-        }
+    case DELETE_BARANG:
+      return {
+        data: barangs.data.filter(({ id }) => id !== payload.id),
+        dataselect: null
+      };
 
-       // Set value for form
-      case SET_HARGA:
-        return {
-          ...state,
-          HARGA: payload
-        }
+    case DELETE_ALL_BARANG:
+      return [];
 
-      // Set value for form
-      case CLEAR_HARGA:
-        return {
-          ...state,
-          HARGA: 0
-        }
-
-          // Set value for form
-      case SET_KATEGORI:
-        return {
-          ...state,
-          KATEGORI: payload
-        }
-
-      // Set value for form
-      case CLEAR_KATEGORI:
-        return {
-          ...state,
-          KATEGORI: null
-        }
-
-          // Set value for form
-      case SET_KETERANGAN:
-        return {
-          ...state,
-          KETERANGAN: payload
-        }
-
-      // Set value for form
-      case CLEAR_KETERANGAN:
-        return {
-          ...state,
-          KETERANGAN: 0
-        }
-
-      // Create a new todo
-      case CREATE_BARANG:
-        return {
-          ...state,
-          barangs: [payload, ...state.barangs]
-        }
-
-        // Create a new todo
-      case UPDATE_BARANG:
-        return {
-          ...state,
-          barangs: [payload, ...state.barangs]
-        }
-
-      // Delete a todo
-      case DELETE_BARANG:
-        return {
-          ...state,
-          barangList: state.barangList.filter((todo) => todo.id !== payload)
-        }
-      default:
-        return state
-    }
+    default:
+      return barangs;
   }
+};
+
+export default barangReducer;

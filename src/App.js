@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { Router, Switch, Route, Link, BrowserRouter } from "react-router-dom";
 
@@ -10,9 +11,12 @@ import Preferences from './pages/Preferences/Preferences';
 import Barang from './pages/Barang/Barang';
 import User from './pages/User/User';
 import TodoContext from "./pages/TodoContext/TodoContext";
+import typeComponent from "./pages/typeComponent/typeComponent";
 
 import useToken from './useToken';
 import { history } from "./helpers/history";
+// import configureStore from "./helpers/configureStore";
+
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 
@@ -33,6 +37,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(process.env);
+    document.title = process.env.REACT_APP_NAME_SITE;
     history.listen((location) => {
       dispatch(clearMessage());
     });
@@ -53,6 +59,7 @@ const App = () => {
 
           {/* <PublicRoute restricted={true} component={SignIn} path="/signin" exact /> */}
 
+          <PrivateRoute component={typeComponent} path="/typeComponent" exact />
           <PrivateRoute component={Dashboard} path="/dashboard" exact />
           <PrivateRoute component={Barang} path="/barang" exact />
           <PrivateRoute component={User} path="/user" exact />

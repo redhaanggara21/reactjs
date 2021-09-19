@@ -11,6 +11,7 @@ import Preferences from './pages/Preferences/Preferences';
 import Barang from './pages/Barang/Barang';
 import User from './pages/User/User';
 import NotFound from "./pages/NotFound/NotFound";
+import Home from "./pages/Home/Home";
 
 // import TodoContext from "./pages/TodoContext/TodoContext";
 // import typeComponent from "./pages/typeComponent/typeComponent";
@@ -40,9 +41,8 @@ const App = () => {
   const [token, setToken] = useState(false);
 
   const getToken = () => {
-      const user = sessionStorage.getItem('user');
-      const userToken = JSON.parse(user);
-      return !userToken?.access_token ? false : true;
+      const user = localStorage.getItem('user');
+      return user ? true : false;
   }
 
   useEffect(() => {
@@ -56,37 +56,16 @@ const App = () => {
   }, [dispatch,token]);
 
   return (
-
     <BrowserRouter history={history}>
       <Switch>
-        
-         <Route exact path={["/", "/login"]} component={Login} />
-         {/* <PublicRoute  path={["/", "/login"]} component={Login} /> */}
-         <PrivateRoute path='/barang' component={Barang} />
-         <PrivateRoute path='/Preferences' component={Preferences} />
-         <PrivateRoute path='/user' component={User} />
-         <Route path="*">
+        <PublicRoute restricted={false} component={Home} path="/" exact />
+        <PublicRoute restricted={true} component={Login} path="/login" exact />
+        <PrivateRoute component={Barang} path="/barang" exact />
+        <PrivateRoute component={Preferences} path="/preferences" exact />
+        <PrivateRoute component={User} path="/user" exact />
+        <Route path="*">
             <NotFound />
-          </Route>
-         {/* <Route exact path='/barang' component={Barang} /> */}
-
-          {/* <PublicRoute restricted={false} component={Login} path="/" exact />
-          <PublicRoute restricted={false} component={Login} path="/login" exact /> */}
-
-          {/* <PublicRoute restricted={true} component={SignIn} path="/signin" exact /> */}
-
-          {/* <PrivateRoute component={typeComponent} path="/typeComponent" exact />
-          <PrivateRoute component={Dashboard} path="/dashboard" exact />
-          <PrivateRoute component={Barang} path="/barang" exact />
-          <PrivateRoute component={User} path="/user" exact />
-          <PrivateRoute component={Preferences} path="/preferences" exact />
-          <PrivateRoute component={TodoContext} path="/todo" exact /> */}
-
-        {/* <Route exact path={["/", "/login"]} component={Login} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/barang" component={Barang} />
-        <Route exact path="/preferences" component={Preferences} /> */}
+        </Route>
       </Switch>
     </BrowserRouter>
   );

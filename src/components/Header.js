@@ -6,7 +6,6 @@ const Header = ({logoutEvent}) => {
     return (
         <AppContext.Consumer>
             {context => (
-                // <label>{context}</label>
                 <Navbar bg="dark" variant="dark" expand="lg">
                     <div className="container">
                         <Navbar.Brand href="#home">

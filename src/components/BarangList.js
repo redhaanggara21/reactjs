@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, InputGroup, FormControl } from 'react-bootstrap';
 import { retrieveBarangs, deleteBarang, findById } from "../actions/barang";
 import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
@@ -10,7 +10,8 @@ const BarangList = () => {
     
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
-
+    const [search, setSearch] = useState("");
+    
     const { data, dataselect, datapagination } = useSelector(
         state =>
         state.barangReducer
@@ -34,15 +35,32 @@ const BarangList = () => {
     
     const getData = (param) => {
         const p = !param?.page ? 1 : param?.page;
-        dispatch(retrieveBarangs(p));
+        dispatch(retrieveBarangs(p, search));
+    }
+
+    const findBarang = () => {
+        getData(null);
     }
 
     useEffect(() => {
         getData();
-      }, []);
+      }, [search]);
 
     return (
       <div>
+          <InputGroup className="mb-3">
+            <FormControl
+                    placeholder="find a thing"
+                    aria-label="Recipient's username"
+                    aria-describedby="basic-addon2"
+                    type="text" 
+                    onChange={e => setSearch(e.target.value)}
+                    value={ search }
+                />
+            <InputGroup.Append>
+            <Button variant="outline-secondary" onClick={() => findBarang() }>Search</Button>
+            </InputGroup.Append>
+        </InputGroup>
           <Table>
                 <thead>
                     <tr>

@@ -41,9 +41,9 @@ export const createBarang = (nama, harga, kategori, keterangan) => async (dispat
 };
 
 
-export const retrieveBarangs = (page = 1) => async (dispatch) => {
+export const retrieveBarangs = (page = 1, find = '') => async (dispatch) => {
   try {
-    const res = await barangService.index(page);
+    const res = await barangService.index(page, find);
     console.log(res);
     dispatch({
       type: GET_BARANG,

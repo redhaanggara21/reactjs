@@ -6,46 +6,49 @@ import { login_ } from "../../actions/auth";
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import Loading from '../../components/Loading';
+import { connect } from "react-redux";
 
 const Login = (props) => {
-
     
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-          email: "",
-          password: ""
-        }
-      });
-
     const dispatch = useDispatch();
-    const { isLoggedIn } = useSelector(state => state.auth);
     const [isLoading, setLoading] = useState(false);
 
-    const onSubmit =  (e) => {
-        setLoading(!isLoading);
-        dispatch(login_(e.email, e.password)).then((response) => {
-            if(!response){
-                setLoading(!isLoading);
-                props.history.push("/barang");
-                window.location.reload();
-            }else{
-                setLoading(!isLoading);
-                // error login
-                // props.history.push("/barang");
-                // window.location.reload();
-            } 
-        });
-    }
+    const { isLoggedIn } = useSelector((state) => {
+        return state.auth;
+    });
+
 
     useEffect(() => {
-        // setLoading(false);
+
+        if(isLoggedIn){
+            // props.history.push("/barang");
+        }
+
         return () => {
             
         };
-    },[isLoading]);
-    // if (isLoggedIn) {
-    //     return <Redirect to="/dashboard" />;
-    // }
+
+    },[isLoading, isLoggedIn]);
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            email: "",
+            password: ""
+        }
+    });
+
+    
+    const onSubmit =  (e) => {
+        setLoading(!isLoading);
+        dispatch(login_(e.email, e.password)).then(() => {
+            setLoading(!isLoading);
+            props.history.push("/barang");
+            // window.location.reload();
+        }).catch(() => {
+            setLoading(!isLoading);
+        });
+    }
+
 
     return(
         <div className="container login-form">
@@ -84,4 +87,13 @@ const Login = (props) => {
     )
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    // console.log(state);
+    return {
+        auth: state.auth
+    };
+  };
+  
+export default connect(mapStateToProps, {
+    login_
+  })(Login);

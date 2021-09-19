@@ -50,10 +50,9 @@ export const register_ = (username, email, password) => (dispatch) => {
 export const login_ = (email, password) => (dispatch) => {
   return authService.login(email, password).then((data) => {
 
-    console.log(data);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: { user: data },
+        payload: { user: data.data.content.access_token },
       });
 
       return Promise.resolve();

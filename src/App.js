@@ -46,7 +46,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    document.title = process.env.REACT_APP_NAME_SITE;
+    console.log({ REACT_APP_API_ENDPOINT: process.env.REACT_APP_ENV })
+    // document.title = process.env.REACT_APP_NAME_SITE;
     setToken(getToken);
     history.listen((location) => {
       dispatch(clearMessage());

@@ -23,7 +23,6 @@ const Login = (props) => {
 
     
     useEffect(() => {
-        console.log(message);
         if(message?.status == "success"){
             setShow(true);
             const timer = setTimeout(() => {
@@ -31,24 +30,10 @@ const Login = (props) => {
                 props.history.push("/barang");
                 window.location.reload();
             }, 2000);
-            // clearTimeout(timer);
         }else{
             setShow(true);
             setLoading(false);
         }
-        // const timer = "";
-        // if(!message?.status == "success"){
-        //     setLoading(!isLoading);
-        //     props.history.push("/barang");
-        //     window.location.reload();
-            // timer = setTimeout(() => {
-            //     setLoading(!isLoading);
-            //     props.history.push("/barang");
-            //     window.location.reload();
-            // }, 3000);
-        // }else{
-        //     setLoading(!isLoading);
-        // }
 
         return () => {
             
@@ -100,7 +85,7 @@ const Login = (props) => {
 
                 </Form.Group>
 
-                {show && (
+                { (show && message) && (
 
                     <Alert variant={message.status} onClose={() => setShow(false)} dismissible>
                          {message.msg}

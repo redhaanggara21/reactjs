@@ -14,15 +14,7 @@ const FormBarang = React.memo(() => {
         return state.barangReducer;
     });
 
-    console.log(dataselect?.id);
-
     const [status, setStatus] = useState(!dataselect?.id ? 'add' : 'edit');
-   
-    // const [namaBarang, setNamaBarang] = useState();
-    // const [harga, setHarga] = useState();
-    // const [kategori, setKategori] = useState();
-    // const [keterangan, setKeterangan] = useState();
-
     const [id, setId] = useState(dataselect?.id);
     const [namaBarang, setNamaBarang] = useState(dataselect?.NAMA_BARANG);
     const [harga, setHarga] = useState(dataselect?.HARGA);

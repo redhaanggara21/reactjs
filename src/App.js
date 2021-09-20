@@ -48,8 +48,6 @@ const App = () => {
   useEffect(() => {
     document.title = process.env.REACT_APP_NAME_SITE;
     setToken(getToken);
-    console.log(token);
-    // console.log();
     history.listen((location) => {
       dispatch(clearMessage());
     });

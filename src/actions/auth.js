@@ -55,26 +55,32 @@ export const login_ = (email, password) => (dispatch) => {
         payload: { user: data.data.content.access_token },
       });
 
-      return Promise.resolve();
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      dispatch({
-        type: LOGIN_FAIL,
-      });
-
       dispatch({
         type: SET_MESSAGE,
-        payload: message,
+        payload: { msg: data.data.msg, status: 'success' },
       });
 
-      return Promise.reject();
+      return Promise.resolve();
+    }, (error) => {
+
+      if (error.response) {
+
+        dispatch({ type: LOGIN_FAIL });
+        dispatch({ type: SET_MESSAGE, payload: { msg: error.response.data.msg, status: 'danger' } });
+
+      } else if (error.request) {
+
+        dispatch({ type: LOGIN_FAIL });
+        dispatch({ type: SET_MESSAGE, payload: { msg: "Network Error", status: 'danger' } });
+
+      } else {
+        
+        dispatch({ type: LOGIN_FAIL });
+        dispatch({ type: SET_MESSAGE, payload: { msg: "Network in maintance", status: 'danger' } });
+
+      }
+
+      return Promise.resolve();
     }
   );
 };

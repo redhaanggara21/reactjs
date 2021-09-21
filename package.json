@@ -31,6 +31,7 @@
     "start:staging": "env-cmd -f .env.staging react-scripts start",
     "start:qa": "env-cmd -f .env.qa react-scripts start",
     "start:prod": "env-cmd -f .env.production react-scripts start",
+    
     "build": "react-scripts build",
     "build:staging": "env-cmd -f .env.staging react-scripts build",
     "build:qa": "env-cmd -f .env.qa react-scripts build",

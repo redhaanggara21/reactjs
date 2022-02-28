@@ -1,16 +1,16 @@
-import { lazy } from 'react';
+import React from 'react'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
-const routes = [
-  {
-    path: 'dashboard',
-    component: lazy(() => import('../pages/Dashboard/Dashboard')),
-    exact: true
-  },
-  {
-    path: 'penjualan',
-    component: lazy(() => import('../pages/Preferences/Preferences')),
-    exact: true
-  }
-];
-
-export default routes;
+export default function Router() {
+  return (
+      <BrowserRouter>
+        <Navigation /> 
+        // I like to put my nav links into a seperate file
+          <Switch>
+            <Route exact path='/'>
+              <PublicComponent />
+            </Route>
+          </Switch>
+      </BrowserRouter>
+  )
+}

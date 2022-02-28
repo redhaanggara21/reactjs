@@ -109,7 +109,7 @@ const Preferences = (props) => {
       }
     );
     
-    barang.index().then(response => {
+    barang.index(null,null,true).then(response => {
       const row = response.data.data.map((data,index) => {
         data.value = data.id;
         data.label = data.NAMA_BARANG;

@@ -1,8 +1,8 @@
 import axios from "axios";
 import config from "./config";
 
-const index = () => {
-    return axios.get(config.API_URL() + "mydata/barang", config.headerHttp());
+const index = (page, find, all) => {
+    return axios.get(config.API_URL() + `mydata/barang?page=${page}&find=${find}&all=${all}`, config.headerHttp());
 };
 
 const create = (data) => {

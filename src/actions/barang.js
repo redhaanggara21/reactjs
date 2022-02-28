@@ -41,12 +41,14 @@ export const createBarang = (nama, harga, kategori, keterangan) => async (dispat
 };
 
 
-export const retrieveBarangs = () => async (dispatch) => {
+export const retrieveBarangs = (page = 1, find = '') => async (dispatch) => {
   try {
-    const res = await barangService.index();
+    const res = await barangService.index(page, find);
+    console.log(res);
     dispatch({
       type: GET_BARANG,
       payload: res.data.data.data,
+      dataPagination: res.data.data
     });
   } catch (err) {
     return Promise.reject(err);

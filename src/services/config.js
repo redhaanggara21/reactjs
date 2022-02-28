@@ -7,11 +7,12 @@ import React from 'react';
 // };
 
 const headerHttp = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.access_token) {
+    const access_token = localStorage.getItem("user");
+    // console.log(access_token);
+    if (access_token) {
       return { 
         headers: {
-          'Authorization' : `Bearer ${user.access_token}` 
+          'Authorization' : `Bearer ${access_token}` 
         }
       };
     } else {

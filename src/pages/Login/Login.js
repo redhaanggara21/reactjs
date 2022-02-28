@@ -3,49 +3,57 @@ import './Login.css';
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { login_ } from "../../actions/auth";
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert, variant } from 'react-bootstrap';
 import { useForm } from "react-hook-form";
 import Loading from '../../components/Loading';
+import { connect } from "react-redux";
 
 const Login = (props) => {
-
-    
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: {
-          email: "",
-          password: ""
-        }
-      });
-
+    const [show, setShow] = useState(false);
     const dispatch = useDispatch();
-    const { isLoggedIn } = useSelector(state => state.auth);
     const [isLoading, setLoading] = useState(false);
 
-    const onSubmit =  (e) => {
-        setLoading(!isLoading);
-        dispatch(login_(e.email, e.password)).then((response) => {
-            if(!response){
-                setLoading(!isLoading);
+    const { isLoggedIn } = useSelector((state) => {
+        return state.auth;
+    });
+
+    const { message } = useSelector((state) => {
+        return state.message;
+    });
+
+    
+    useEffect(() => {
+        if(message?.status == "success"){
+            setShow(true);
+            const timer = setTimeout(() => {
+                setLoading(false);
                 props.history.push("/barang");
                 window.location.reload();
-            }else{
-                setLoading(!isLoading);
-                // error login
-                // props.history.push("/barang");
-                // window.location.reload();
-            } 
-        });
-    }
+            }, 2000);
+        }else{
+            setShow(true);
+            setLoading(false);
+        }
 
-    useEffect(() => {
-        // setLoading(false);
         return () => {
             
-        };
-    },[isLoading]);
-    // if (isLoggedIn) {
-    //     return <Redirect to="/dashboard" />;
-    // }
+        }
+
+    },[isLoading, isLoggedIn, message]);
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            email: "",
+            password: ""
+        }
+    });
+
+    
+    const onSubmit =  (e) => {
+        setLoading(true);
+        dispatch(login_(e.email, e.password));
+    }
+
 
     return(
         <div className="container login-form">
@@ -76,12 +84,38 @@ const Login = (props) => {
                     {errors.password && errors.password.type === "maxLength" && <span>password max length exceeded</span> }
 
                 </Form.Group>
+
+                { (show && message) && (
+
+                    <Alert variant={message.status} onClose={() => setShow(false)} dismissible>
+                         {message.msg}
+                    </Alert>
+
+                )}
+
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
+
+
+
             </Form>
         </div>
     )
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    console.log(state);
+
+    const { auth } = state.auth;
+    const { message } = state.message;
+
+    return {
+        auth,
+        message
+    };
+  };
+  
+export default connect(mapStateToProps, {
+    login_
+  })(Login);

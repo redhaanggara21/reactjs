@@ -1,0 +1,1 @@
+firsrt install like what instruction react give and run

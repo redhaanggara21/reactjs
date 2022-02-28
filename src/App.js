@@ -23,6 +23,8 @@ import { history } from "./helpers/history";
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
 
+import Sidebar from "./components/SideBar/sidebar";
+import Ckeditor from "./pages/Ckeditor/Ckeditor";
 
 const App = () => {
 
@@ -56,12 +58,16 @@ const App = () => {
 
   return (
     <BrowserRouter history={history}>
+      {/* <Sidebar/> */}
       <Switch>
-        <PublicRoute restricted={false} component={Home} path="/" exact />
+        <PublicRoute restricted={false} component={Login} path="/" exact />
         <PublicRoute restricted={true} component={Login} path="/login" exact />
         <PrivateRoute component={Barang} path="/barang" exact />
         <PrivateRoute component={Preferences} path="/preferences" exact />
         <PrivateRoute component={User} path="/user" exact />
+
+        <PublicRoute restricted={false} component={Ckeditor} path="/ckeditor" exact />
+
         <Route path="*">
             <NotFound />
         </Route>

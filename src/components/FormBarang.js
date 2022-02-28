@@ -89,7 +89,7 @@ const FormBarang = React.memo(() => {
             <Form onSubmit={handleSaveDataForm}>
                 <h1>{ status == 'add' ? 'Add Barang' : 'Edit Barang' }</h1>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Nama Barang</Form.Label>
+                    <Form.Label>Name</Form.Label>
                     <Form.Control 
                         type="text" 
                         placeholder="Enter nama"
@@ -97,7 +97,7 @@ const FormBarang = React.memo(() => {
                         value={ namaBarang } />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Harga</Form.Label>
+                    <Form.Label>Price</Form.Label>
                     <Form.Control 
                         type="number" 
                         placeholder="Enter price"
@@ -105,7 +105,7 @@ const FormBarang = React.memo(() => {
                         value={harga}/>
                 </Form.Group>
                 <Form.Group controlId="formBasicSelect">
-                    <Form.Label>Kategori</Form.Label>
+                    <Form.Label>Category</Form.Label>
                     <Select
                           value = {
                             listKategori.filter(option => 
@@ -120,7 +120,7 @@ const FormBarang = React.memo(() => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>KETERANGAN</Form.Label>
+                    <Form.Label>Price</Form.Label>
                     <Form.Control 
                         type="text" 
                         placeholder="Enter keterangan"
